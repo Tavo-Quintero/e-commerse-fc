@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Shoe = sequelize.define('Shoe', {
+  const Shoe = sequelize.define('shoes', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -29,17 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     image: {
       type: DataTypes.STRING,
       allowNull: false
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    stock: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
     }
   }, {
-    tableName: 'shoes'
+    tableName: 'shoes',
+    timestamps: false,
+    freezeTableName: true,
   });
 
   Shoe.associate = (models) => {

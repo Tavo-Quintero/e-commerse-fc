@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const ShoeSizes = sequelize.define('ShoeSizes', {
+  const ShoeSizes = sequelize.define('shoesizes', {
     shoeId: {
       type: DataTypes.INTEGER,
       references: {
@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     tableName: 'shoesizes',
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true,
   });
 
   return ShoeSizes;

@@ -1,4 +1,4 @@
-const { Size } = require('../models');
+const { Size } = require('../../models');
 
 // Obtener todas las tallas
 exports.getAllSizes = async (req, res) => {
@@ -19,21 +19,27 @@ exports.getSizeById = async (req, res) => {
         }
         res.json(size);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching size' });
+        console.error('Error fetching size:', error);
+        res.status(500).json({ message: 'Error fetching size', error: error.message });
     }
 };
 
 // Crear una nueva talla
 exports.createSize = async (req, res) => {
     try {
+        console.log('Request body:', req.body);
         const { value } = req.body;
+        if (!value) {
+            return res.status(400).json({ message: 'Size value is required' });
+        }
         const size = await Size.create({ value });
+        console.log('Size created:', size);
         res.status(201).json(size);
     } catch (error) {
-        res.status(500).json({ message: 'Error creating size' });
+        console.error('Error creating size:', error);
+        res.status(500).json({ message: 'Error creating size', error: error.message });
     }
 };
-
 // Actualizar una talla existente
 exports.updateSize = async (req, res) => {
     try {

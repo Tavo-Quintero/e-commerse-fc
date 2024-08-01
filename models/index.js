@@ -7,6 +7,7 @@ const models = {};
 models.Shoe = require('./shoe')(sequelize, Sequelize);
 models.Size = require('./size')(sequelize, Sequelize);
 models.ShoeSizes = require('./shoesizes')(sequelize, Sequelize);
+models.User = require('./user')(sequelize, Sequelize);
 
 // Configurar asociaciones
 Object.keys(models).forEach(modelName => {

@@ -6,7 +6,7 @@ const { User, Shoe, Size, ShoeSizes } = require('../models');
 const syncModels = async () => {
   try {
     // Sincronizar modelos con `force: true` borra las tablas existentes
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log('Modelos sincronizados con éxito');
   } catch (error) {
     console.error('Error sincronizando modelos:', error);

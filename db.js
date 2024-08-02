@@ -7,7 +7,7 @@ const pool = new Pool({
   database: process.env.DB_NAME,     
   password: process.env.DB_PASSWORD, 
   port: process.env.DB_PORT, 
-  database: process.env.DATABASE_URL           
+  database: process.envDATABASE_URL           
 });
 
 pool.connect((err, client, release) => {

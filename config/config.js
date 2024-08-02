@@ -6,6 +6,7 @@ const sequelize = new Sequelize(
   process.env.DATABASE_URL ? undefined : 'postgres', 
   process.env.DATABASE_URL ? undefined : '123', 
   {
+    
     host: process.env.DATABASE_URL ? undefined : 'localhost',
     dialect: 'postgres',
     logging: false,

@@ -1,6 +1,7 @@
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('sneakers', 'postgres', '123', {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
     host: 'localhost',
     dialect: 'postgres',
     logging: false,  

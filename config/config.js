@@ -1,14 +1,21 @@
 const { Sequelize } = require('sequelize');
 
+// Usa DATABASE_URL si está definida, de lo contrario, usa la configuración local
+const isProduction = !!process.env.DATABASE_URL;
+
 const sequelize = new Sequelize(process.env.DATABASE_URL || 'sneakers', {
-  dialect: 'postgres',
-  logging: false,
-  dialectOptions: process.env.DATABASE_URL ? {
+  dialect: isProduction ? 'postgres' : undefined,
+  host: isProduction ? undefined : 'localhost',
+  username: isProduction ? undefined : 'postgres',
+  password: isProduction ? undefined : '123',
+  database: isProduction ? undefined : 'sneakers',
+  dialectOptions: isProduction ? {
     ssl: {
       require: true,
-      rejectUnauthorized: false
+      rejectUnauthorized: false // Esto puede ser necesario para algunos proveedores
     }
-  } : {}
+  } : {},
+  logging: false,
 });
 
 sequelize.authenticate()

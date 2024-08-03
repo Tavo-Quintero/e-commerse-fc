@@ -1,10 +1,9 @@
-// app.js
-
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors'); // Requerir el paquete cors
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,6 +21,9 @@ app.use(express.json()); // Parseo de JSON
 app.use(express.urlencoded({ extended: false })); // Parseo de datos URL-encoded
 app.use(cookieParser()); // Parseo de cookies
 app.use(express.static(path.join(__dirname, 'public'))); // Servir archivos estáticos desde 'public'
+
+// Configuración de CORS
+app.use(cors());
 
 // Configuración de rutas
 app.use('/', indexRouter); // Ruta principal

@@ -26,11 +26,11 @@ exports.getShoeById = async (req, res) => {
 // Crear una nueva zapatilla
 exports.createShoe = async (req, res) => {
     try {
-        const { name, brand, price, gender, sport, image, sizes, description, stock } = req.body;
+        const { name, brand, price, gender, sport, image, sizes, description, stock  } = req.body;
 
-        console.log('Datos recibidos:', { name, brand, price, gender, sport, image, sizes, description, stock });
+        console.log('Datos recibidos:', { name, brand, price, gender, sport, image, sizes, description, stock  });
 
-        const shoe = await Shoe.create({ name, brand, price, gender, sport, image, description, stock });
+        const shoe = await Shoe.create({ name, brand, price, gender, sport, image, description, stock  });
         console.log('Shoe creado:', shoe);
 
         if (sizes && sizes.length > 0) {
@@ -51,14 +51,14 @@ exports.createShoe = async (req, res) => {
 // Actualizar una zapatilla existente
 exports.updateShoe = async (req, res) => {
     try {
-        const { name, brand, price, gender, sport, image, sizes } = req.body;
+        const { name, brand, price, gender, sport, image, sizes, description, stock } = req.body;
         const shoe = await Shoe.findByPk(req.params.id);
 
         if (!shoe) {
             return res.status(404).json({ message: 'Shoe not found' });
         }
 
-        await shoe.update({ name, brand, price, gender, sport, imag, description, stock });
+        await shoe.update({ name, brand, price, gender, sport, image, description, stock });
 
         if (sizes && sizes.length > 0) {
             const sizeInstances = await Size.findAll({ where: { id: sizes } });

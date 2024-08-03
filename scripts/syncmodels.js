@@ -8,7 +8,7 @@ const syncModels = async () => {
     await User.sync({ force: true });
     await Shoe.sync({ force: true });
     await Size.sync({ force: true });
-    await ShoeSizes.sync({ force: true });
+    await ShoeSizes.sync({ force: false });
     console.log('Modelos sincronizados con éxito');
   } catch (error) {
     console.error('Error sincronizando modelos:', error);

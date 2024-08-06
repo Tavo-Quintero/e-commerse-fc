@@ -23,9 +23,19 @@ router.put('/sizes/:id', sizesController.updateSize);
 router.delete('/sizes/:id', sizesController.deleteSize);
 // Obtener todos los usuarios
 
+// Obtener todos los usuarios
 router.get('/users', usersController.getAllUsers);
-router.post('/users', usersController.createUser);
-router.put('/users/:id', usersController.updateUser);
+router.post('/users', usersController.register);
+router.post('/users', usersController.login);
+router.get('/users', usersController.getUserProfile);
+router.put('/users/:id', usersController.updateUserProfile);
+router.delete('/users/:id', usersController.deleteUser);
+
+
+// Rutas de autenticación
+router.post('/auth/login', authController.login);
+router.post('/auth/register', authController.register);
+router.post('/auth/google', authController.googleAuth);
 
 router.get('/shoesizes', async function(req, res, next) {
     try {

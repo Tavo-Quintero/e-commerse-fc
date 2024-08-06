@@ -4,6 +4,7 @@ var router = express.Router();
 var shoesController = require('../controllers/product/shoeController');
 var sizesController = require('../controllers/product/sizeController');
 var usersController = require('../controllers/product/userController');
+var authController = require('../controllers/product/authController');
 var { User, Shoe, Size, ShoeSizes, sequelize } = require('../models'); // Importa los modelos configurados con Sequelize
 
 // Obtener todas las zapatillas

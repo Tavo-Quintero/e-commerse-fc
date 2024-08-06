@@ -4,6 +4,7 @@ var router = express.Router();
 var shoesController = require('../controllers/product/shoeController');
 var sizesController = require('../controllers/product/sizeController');
 var usersController = require('../controllers/product/userController');
+var authController = require('../controllers/product/authContoller');
 var { User, Shoe, Size, ShoeSizes, sequelize } = require('../models'); // Importa los modelos configurados con Sequelize
 
 // Obtener todas las zapatillas
@@ -27,6 +28,10 @@ router.get('/users', usersController.getAllUsers);
 router.get('/users/:id', usersController.getUserById);
 router.post('/users', usersController.createUser);
 router.put('/users/:id', usersController.updateUser);
+
+router.post('/auth/google', authController.googleAuth);
+router.post('/auth/login', authController.login);
+router.post('/auth/register', authController.register);
 
 router.get('/shoesizes', async function(req, res, next) {
     try {

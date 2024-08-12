@@ -5,7 +5,7 @@ var shoesController = require('../controllers/product/shoeController');
 var sizesController = require('../controllers/product/sizeController');
 var usersController = require('../controllers/product/userController');
 var authController = require('../controllers/product/authController');
-var paymentController = require('../controllers/product/paymentController');
+var paymentController = require('../controllers/product/paymentCobtroller');
 var { User, Shoe, Size, ShoeSizes, sequelize } = require('../models'); // Importa los modelos configurados con Sequelize
 
 

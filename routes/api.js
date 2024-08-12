@@ -5,8 +5,11 @@ var shoesController = require('../controllers/product/shoeController');
 var sizesController = require('../controllers/product/sizeController');
 var usersController = require('../controllers/product/userController');
 var authController = require('../controllers/product/authController');
+var paymentController = require('../controllers/product/paymentController');
 var { User, Shoe, Size, ShoeSizes, sequelize } = require('../models'); // Importa los modelos configurados con Sequelize
 
+
+router.post('/create-order', paymentController.createOrder )
 // Obtener todas las zapatillas
 router.get('/shoes', shoesController.getAllShoes);
 router.get('/shoes/id/:id', shoesController.getShoeById);

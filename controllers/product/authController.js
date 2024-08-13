@@ -8,16 +8,35 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ where: { email } });
 
-        if (!user || !await bcrypt.compare(password, user.password)) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+        // Encuentra al usuario por email
+        const user = await User.findOne({ where: { email } });
+        console.log('User found:', user);
+
+        // Verifica si el usuario existe
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email' });
         }
 
+        // Compara la contraseña
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        console.log('Password match:', passwordMatch);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+
+        // Verifica si el JWT_SECRET está configurado
+        if (!process.env.JWT_SECRET) {
+            throw new Error('JWT_SECRET is not defined');
+        }
+
+        // Genera el token
         const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
     } catch (error) {
-        res.status(500).json({ message: 'Error logging in' });
+        console.error('Error logging in:', error);
+        res.status(500).json({ message: 'Error logging in', error: error.message });
     }
 };
 

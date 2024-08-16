@@ -49,14 +49,14 @@ exports.getUserProfile = async (req, res) => {
 // Actualizar perfil de usuario
 exports.updateUserProfile = async (req, res) => {
     try {
-        const { username, email } = req.body;
+        const { username, email, ban } = req.body;
         const user = await User.findByPk(req.user.id);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        await user.update({ username, email });
+        await user.update({ username, email, ban});
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error updating user profile' });

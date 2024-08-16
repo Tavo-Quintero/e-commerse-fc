@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     stock: {
       type: DataTypes.BOOLEAN,
       allowNull: false
+    },
+    enable: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     tableName: 'shoes',
@@ -46,6 +50,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Shoe.associate = (models) => {
     Shoe.belongsToMany(models.Size, { through: models.ShoeSizes, foreignKey: 'shoeId', as: 'sizes' });
+    Shoe.belongsToMany(models.User, { through: models.Wishlist, foreignKey: 'shoeId', as: 'users' });
+    Shoe.belongsToMany(models.Order, { through: models.Orderitem, foreignKey: 'shoeId', as: 'order' });
   };
 
   return Shoe;

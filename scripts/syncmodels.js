@@ -20,5 +20,4 @@ const syncModels = async () => {
     await sequelize.close();
   }
 };
-
 syncModels();

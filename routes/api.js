@@ -7,7 +7,13 @@ var usersController = require('../controllers/product/userController');
 var authController = require('../controllers/product/authController');
 var paymentController = require('../controllers/product/paymentCobtroller');
 var { User, Shoe, Size, ShoeSizes, sequelize } = require('../models'); // Importa los modelos configurados con Sequelize
+var adresseController = require("../controllers/product/adressesController");
+var orderController = require("../controllers/product/orderController");
 
+router.get('/order', orderController.getAllOrder)
+router.get('/ordershoe', orderController.getAllOrdershoe)
+
+router.get('/adresses', adresseController.getAllAddresses);
 
 router.post('/create-order', paymentController.createOrder )
 // Obtener todas las zapatillas
@@ -34,6 +40,8 @@ router.post('/users', usersController.login);
 router.get('/users/:id', usersController.getUserProfile);
 router.put('/users/:id', usersController.updateUserProfile);
 router.delete('/users/:id', usersController.deleteUser);
+router.get('/usersadres', usersController.getAllUserAdress);
+router.get('/usersshoe', usersController.getAllUsershoe);
 
 
 // Rutas de autenticación

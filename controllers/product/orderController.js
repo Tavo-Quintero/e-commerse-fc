@@ -5,7 +5,7 @@ exports.getAllOrdershoe = async (req, res) => {
         const order = await Order.findAll({ include: { model: Shoe, as: 'shoes' } });
         res.json(order);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching shoes' });
+        res.status(500).json({ message: 'Error fetching getAllOrdershoe' });
     }
 };
 
@@ -14,6 +14,6 @@ exports.getAllOrder = async (req, res) => {
         const order = await Order.findAll();
         res.json(order);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching Addresses' });
+        res.status(500).json({ message: 'Error fetching Order' });
     }
 };

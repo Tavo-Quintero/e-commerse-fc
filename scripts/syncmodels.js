@@ -17,7 +17,6 @@ const syncModels = async () => {
   } catch (error) {
     console.error('Error sincronizando modelos:', error);
   } finally {
-    
     await sequelize.close();
   }
 };

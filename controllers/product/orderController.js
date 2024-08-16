@@ -1,6 +1,6 @@
 const {Order, Shoe} = require("../../models");
 
-exports.getAllOrder = async (req, res) => {
+exports.getAllOrdershoe = async (req, res) => {
     try {
         const order = await Order.findAll({ include: { model: Shoe, as: 'shoes' } });
         res.json(order);

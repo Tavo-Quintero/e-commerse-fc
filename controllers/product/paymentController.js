@@ -1,35 +1,32 @@
-const { MercadoPagoConfig, Payment } = require('mercadopago');
+const { MercadoPagoConfig, Preference } = require('mercadopago');
 const { v4: uuidv4 } = require('uuid');
 
 const client = new MercadoPagoConfig({
-    accessToken: 'TEST-5761146775875634-081211-ace83aa01b7e884ada2d7a96e62932f0-1010031640',
+    accessToken: 'APP_USR-6130205937225594-081616-ac10bd897e2f51aa51deea5e5a36aabf-1947871849',
     options: {
         timeout: 5000,
         idempotencyKey: uuidv4(),
     }
 });
 
-const payment = new Payment(client);
+const preference = new Preference(client)
 
 exports.createOrder = (req, res) => {
-    const { transaction_amount, description, payment_method_id, payer, token } = req.body;
-
-    // Verificar que el token está presente
-    if (!token) {
-        return res.status(400).json({ error: 'Token is required' });
-    }
+    const { items } = req.body;
 
     // Crear el cuerpo de la solicitud para MercadoPago
     const body = {
-        transaction_amount,
-        description,
-        payment_method_id,
-        payer,
-        token // Asegúrate de incluir el token
-    };
+        items,
+        back_urls: {
+            success: "https://pf-henry-trabajofinal.vercel.app/home",
+            failure: "https://pf-henry-trabajofinal.vercel.app/home",
+            pending: "https://pf-henry-trabajofinal.vercel.app/home"
+        },
+        auto_return: "approved"
+    }
 
     // Enviar solicitud a MercadoPago
-    payment.create({ body })
+    preference.create({ body })
         .then(response => {
             res.status(200).json(response);
         })

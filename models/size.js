@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Size.associate = (models) => {
     // Cambia 'shoes' por 'Shoe' si el alias en el otro modelo es 'Shoe'
-    Size.belongsToMany(models.Shoe, { through: models.ShoeSizes, foreignKey: 'sizeId', as: 'shoes' });
+    Size.belongsToMany(models.Shoe, { through: models.ShoeSizes, foreignKey: 'sizeid', as: 'shoes' });
   };
 
   return Size;

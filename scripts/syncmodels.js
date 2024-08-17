@@ -12,7 +12,7 @@ const syncModels = async () => {
     await Order.sync({ force: false });
     await Orderitem.sync({ force: false });
     await Useraddresses.sync({ force: false });
-    await Wishlist.sync({ force: true });
+    await Wishlist.sync({ force: false });
     console.log('Modelos sincronizados con éxito');
   } catch (error) {
     console.error('Error sincronizando modelos:', error);

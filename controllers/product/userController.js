@@ -100,9 +100,16 @@ exports.getAllUserAdress = async (req, res) => {
 
 exports.getAllUsershoe = async (req, res) => {
     try {
-        const users = await User.findAll({ include: { model: Shoe, as: 'shoes' } });
+        const users = await User.findAll({
+            include: {
+                model: Shoe,
+                as: 'shoes',
+                through: { attributes: [] }
+            }
+        });
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching shoes' });
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching getAllUsershoe' });
     }
 };

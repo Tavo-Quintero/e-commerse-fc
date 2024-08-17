@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
     const Wishlist = sequelize.define('wishlist', {
-        ordeid: {
+        userid: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'order',
+                model: 'users',
                 key: 'id'
             },
             onDelete: 'CASCADE'

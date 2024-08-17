@@ -112,4 +112,5 @@ exports.getAllUsershoe = async (req, res) => {
         console.error(error); // Agrega esto para ver el error en la consola
         res.status(500).json({ message: 'Error fetching getAllUsershoe' });
     }
+    
 };

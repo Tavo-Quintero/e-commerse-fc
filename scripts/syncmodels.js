@@ -4,15 +4,15 @@ const { User, Shoe, Size, ShoeSizes,Addresses,Order, Orderitem, Useraddresses,Wi
 
 const syncModels = async () => {
   try {
-    await User.sync({ force: false });
-    await Shoe.sync({ force: false });
-    await Size.sync({ force: false });
-    await ShoeSizes.sync({ force: false });
-    await Addresses.sync({ force: false });
-    await Order.sync({ force: false });
-    await Orderitem.sync({ force: false });
-    await Useraddresses.sync({ force: false });
-    await Wishlist.sync({ force: false });
+    await User.sync({ force: true });
+    await Shoe.sync({ force: true });
+    await Size.sync({ force: true });
+    await ShoeSizes.sync({ force: true });
+    await Addresses.sync({ force: true });
+    await Order.sync({ force: true });
+    await Orderitem.sync({ force: true });
+    await Useraddresses.sync({ force: true });
+    await Wishlist.sync({ force: true });
     console.log('Modelos sincronizados con éxito');
   } catch (error) {
     console.error('Error sincronizando modelos:', error);

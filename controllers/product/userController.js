@@ -109,13 +109,7 @@ exports.getAllUserAdress = async (req, res) => {
 
 exports.getAllUsershoe = async (req, res) => {
     try {
-        const users = await User.findAll({
-            include: {
-                model: Shoe,
-                as: 'shoes',
-                through: { attributes: [] } // Esto excluye los datos de la tabla intermedia
-            }
-        });
+        const users = await User.findAll({ include: { model: Shoe, as: 'shoes' } });
         res.json(users);
     } catch (error) {
         console.error(error); // Agrega esto para ver el error en la consola

@@ -35,11 +35,6 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
         freezeTableName: true,
     });
-
-    Addresses.associate = (models) => {
-        Addresses.belongsToMany(models.User, { through: models.Useraddresses, foreignKey: 'addressesid', as: 'users' });
-    };
-
     return Addresses;
 };
 

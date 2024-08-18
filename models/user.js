@@ -27,22 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     ban: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-    },
-    googleId: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      unique: true,
-    },
-    facebookId: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      unique: true,
-    },
-    githubId: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      unique: true,
-    },
+    }
   }, {
     tableName: 'users',
     timestamps: false,

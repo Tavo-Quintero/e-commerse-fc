@@ -75,7 +75,7 @@ exports.deleteUser = async (req, res) => {
         await user.destroy();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting user' });
+        res.status(500).json({ message: 'Error deleting deleteUser' });
     }
 };
 
@@ -85,7 +85,7 @@ exports.getAllUsers = async (req, res) => {
         const users = await User.findAll({ attributes: { exclude: ['password'] } });
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching users' });
+        res.status(500).json({ message: 'Error fetching getAllUsers' });
     }
 };
 
@@ -94,23 +94,15 @@ exports.getAllUserAdress = async (req, res) => {
         const users = await User.findAll({ include: { model: Addresses, as: 'addresses' } });
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching shoes' });
+        res.status(500).json({ message: 'Error fetching getAllUserAdress' });
     }
 };
 
 exports.getAllUsershoe = async (req, res) => {
     try {
-        const users = await User.findAll({
-            include: {
-                model: Shoe,
-                as: 'shoes',
-                through: { attributes: [] } // Esto excluye los datos de la tabla intermedia
-            }
-        });
+        const users = await User.findAll({ include: { model: Shoe, as: 'shoes' } });
         res.json(users);
     } catch (error) {
-        console.error(error); // Agrega esto para ver el error en la consola
         res.status(500).json({ message: 'Error fetching getAllUsershoe' });
     }
-
 };

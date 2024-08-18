@@ -1,15 +1,15 @@
 // controllers/userController.js
-const { User, Addresses, Shoe } = require('../../models');
+const { User, Addresses, Shoe} = require('../../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban } = req.body;
+        const { username, email, password, isAdmin } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ username, email, password: hashedPassword, isAdmin, ban });
+        const user = await User.create({ username, email, password: hashedPassword, isAdmin });
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error registering user' });
@@ -49,14 +49,14 @@ exports.getUserProfile = async (req, res) => {
 // Actualizar perfil de usuario
 exports.updateUserProfile = async (req, res) => {
     try {
-        const { username, email, ban } = req.body;
+        const { username, email } = req.body;
         const user = await User.findByPk(req.user.id);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        await user.update({ username, email, ban});
+        await user.update({ username, email });
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error updating user profile' });
@@ -75,7 +75,7 @@ exports.deleteUser = async (req, res) => {
         await user.destroy();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting deleteUser' });
+        res.status(500).json({ message: 'Error deleting user' });
     }
 };
 
@@ -85,7 +85,16 @@ exports.getAllUsers = async (req, res) => {
         const users = await User.findAll({ attributes: { exclude: ['password'] } });
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching getAllUsers' });
+        res.status(500).json({ message: 'Error fetching users' });
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.findAll({ attributes: { exclude: ['password'] } });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users' });
     }
 };
 
@@ -94,15 +103,22 @@ exports.getAllUserAdress = async (req, res) => {
         const users = await User.findAll({ include: { model: Addresses, as: 'addresses' } });
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching getAllUserAdress' });
+        res.status(500).json({ message: 'Error fetching shoes' });
     }
 };
 
 exports.getAllUsershoe = async (req, res) => {
     try {
-        const users = await User.findAll({ include: { model: Shoe, as: 'shoes' } });
+        const users = await User.findAll({
+            include: {
+                model: Shoe,
+                as: 'shoes',
+                through: { attributes: [] } // Esto excluye los datos de la tabla intermedia
+            }
+        });
         res.json(users);
     } catch (error) {
+        console.error(error); // Agrega esto para ver el error en la consola
         res.status(500).json({ message: 'Error fetching getAllUsershoe' });
     }
 };

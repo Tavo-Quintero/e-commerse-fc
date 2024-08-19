@@ -1,6 +1,6 @@
 // scripts/syncModels.js
 const sequelize = require('../config/config');
-const { User, Shoe, Size, ShoeSizes,addresses,order, orderitem } = require('../models');
+const { User, Shoe, Size, ShoeSizes,addresses,order,orderitem,Wishlist } = require('../models');
 
 const syncModels = async () => {
   try {
@@ -11,6 +11,8 @@ const syncModels = async () => {
     await addresses.sync({ force: true });
     await order.sync({ force: true });
     await orderitem.sync({ force: true });
+    await orderitem.sync({ force: true });
+    await Wishlist.sync({ force: true });
     console.log('Modelos sincronizados con éxito');
   } catch (error) {
     console.error('Error sincronizando modelos:', error);

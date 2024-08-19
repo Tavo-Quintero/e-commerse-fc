@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Adress = sequelize.define('Addresses', {
+    const Addresse = sequelize.define('Addresses', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -35,6 +35,6 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
         freezeTableName: true,
     });
-    return Adress;
+    return Addresse;
 };
 

@@ -1,6 +1,6 @@
 // scripts/syncModels.js
 const sequelize = require('../config/config');
-const { User, Shoe, Size, ShoeSizes,Addresse,Order, Orderitem, Wishlist } = require('../models');
+const { User, Shoe, Size, ShoeSizes,Addresses,Order, Orderitem, Wishlist } = require('../models');
 
 const syncModels = async () => {
   try {
@@ -8,7 +8,7 @@ const syncModels = async () => {
     await Shoe.sync({ force: true });
     await Size.sync({ force: true });
     await ShoeSizes.sync({ force: true });
-    await Addresse.sync({ force: true });
+    await Addresses.sync({ force: true });
     await Order.sync({ force: true });
     await Orderitem.sync({ force: true });
     await Wishlist.sync({ force: true });

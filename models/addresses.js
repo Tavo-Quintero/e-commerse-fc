@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Addresse = sequelize.define('Addresses', {
+    const Addresses = sequelize.define('addresses', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -31,10 +31,15 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
     }, {
-        tableName: 'Addresses',
+        tableName: 'addresses',
         timestamps: false,
         freezeTableName: true,
     });
-    return Addresse;
+
+    Addresses.associate = (models) => {
+        Addresses.belongsToMany(models.User, { through: models.Useraddresses, foreignKey: 'addressesid', as: 'users' });
+    };
+
+    return Addresses;
 };
 

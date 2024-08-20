@@ -40,6 +40,7 @@ router.get('/users/:id', usersController.getUserProfile);
 router.put('/users/:id', usersController.updateUserProfile);
 router.delete('/users/:id', usersController.deleteUser);
 router.get('/usersshoe', usersController.getAllUserShoe);
+router.get('/useraddresses', usersController.getAllUserAddresses);
 
 // Rutas de autenticación
 router.post('/auth/login', authController.login);

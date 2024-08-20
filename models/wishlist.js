@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Wishlist = sequelize.define('wishlist', {
-        shoeId: {
+        shoeid: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'shoes',
@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             onDelete: 'CASCADE'
         },
-        userId: {
+        userid: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'users',

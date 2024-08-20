@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
   });
   User.associate = (models) => {
-    User.belongsToMany(models.Shoe, { through: models.Wishlist, foreignKey: 'userId', as: 'shoes' });
+    User.belongsToMany(models.Shoe, { through: models.Wishlist, foreignKey: 'userid', as: 'shoes' });
   };
 
   return User;

@@ -28,10 +28,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     }
+
   }, {
     tableName: 'users',
     timestamps: false,
     freezeTableName: true,
   });
+  User.associate = (models) => {
+    User.belongsToMany(models.Shoe, { through: models.Wishlist, foreignKey: 'userId', as: 'shoes' });
+  };
+
   return User;
 };

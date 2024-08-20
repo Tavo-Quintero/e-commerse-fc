@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     Order.associate = (models) => {
         Order.belongsToMany(models.Shoe, {
             through: models.Orderitem,
-            foreignKey: 'orderid', // Asegúrate de que la clave foránea es correcta
+            foreignKey: 'orderid',
             as: 'shoes'
         });
     };

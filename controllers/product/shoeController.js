@@ -50,9 +50,12 @@ exports.createShoe = async (req, res) => {
 
 // Actualizar una zapatilla existente
 exports.updateShoe = async (req, res) => {
+    shoe.setSizes = async function (sizeInstances) {
+        
+    };
     try {
-        const { name, brand, price, gender, sport, image, sizes, description, stock,enable } = req.body;
-        const shoe = await Shoe.findByPk(req.params.id);
+        const { name, brand, price, gender, sport, image, sizes, description, stock, enable } = req.body;
+        const shoe = await Shoe.findByPk( req.params.id);
 
         if (!shoe) {
             return res.status(404).json({ message: 'Shoe not found' });

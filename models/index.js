@@ -12,6 +12,7 @@ models.Addresses = require('./addresses')(sequelize, Sequelize);
 models.Order = require('./order')(sequelize, Sequelize);
 models.Orderitem = require('./orderitem')(sequelize, Sequelize);
 models.Wishlist = require('./wishlist')(sequelize, Sequelize);
+models.Useraddresses = require('./useraddresses')(sequelize, Sequelize);
 
 // Configurar asociaciones
 Object.keys(models).forEach(modelName => {

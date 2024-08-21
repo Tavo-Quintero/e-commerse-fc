@@ -9,13 +9,32 @@ exports.getAllAddresses = async (req, res) => {
         res.status(500).json({ message: 'Error fetching getAllAddresses' });
     }
 };
-exports.createAddress = async (req, res) => {
-    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+exports.createUserAddress = async (req, res) => {
     try {
-        const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
-        res.status(201).json(newAddress);
+        const { userid, pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+
+        // Verificar si el usuario existe
+        const user = await User.findByPk(userid);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Crear la nueva dirección
+        const address = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+
+        // Asociar la nueva dirección al usuario
+        await user.addAddress(address);
+
+        // Actualizar el usuario con las nuevas direcciones
+        const updatedUser = await User.findByPk(userid, {
+            include: { model: Addresses, as: 'addresses' }
+        });
+
+        res.status(201).json(updatedUser);
     } catch (error) {
-        res.status(500).json({ message: 'Error creating Address' });
+        console.error('Error creating address:', error.message, error.stack);
+        res.status(500).json({ message: 'Error creating address' });
     }
 };
 

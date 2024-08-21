@@ -100,7 +100,7 @@ exports.deleteShoe = async (req, res) => {
 
 // Filtrar zapatillas por deporte, género, marca, etc.
 exports.filterShoes = async (req, res) => {
-  
+
     try {
         const { sport, gender, brand } = req.query;
         const where = {};
@@ -125,7 +125,6 @@ exports.filterShoes = async (req, res) => {
         res.status(500).json({ message: 'Error filtering shoes', error: error.message });
     }
 };
-
 
 // Obtener tallas disponibles para una zapatilla
 exports.getShoeSizes = async (req, res) => {

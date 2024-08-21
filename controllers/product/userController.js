@@ -99,6 +99,7 @@ exports.getAllUserShoe = async (req, res) => {
     }
 };
 
+
 exports.getAllUserAddresses = async (req, res) => {
     try {
         const users = await User.findAll({ include: { model: Addresses, as: 'addresses' } });
@@ -106,5 +107,49 @@ exports.getAllUserAddresses = async (req, res) => {
     } catch (error) {
         console.error('Error fetching getAllUserAddresses:', error.message, error.stack);
         res.status(500).json({ message: 'Error fetching getAllUserAddresses' });
+    }
+};
+
+exports.createUserAddress = async (req, res) => {
+    try {
+        const { userid, pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+        const address = await Addresses.create({ userid, pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        res.status(201).json(address);
+    } catch (error) {
+        console.error('Error creating address:', error.message, error.stack);
+        res.status(500).json({ message: 'Error creating address' });
+    }
+};
+
+exports.updateUserAddress = async (req, res) => {
+    const { id } = req.params;
+    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+    try {
+        const address = await Addresses.findByPk(id);
+        if (address) {
+            await address.update({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+            res.json(address);
+        } else {
+            res.status(404).json({ message: 'Address not found' });
+        }
+    } catch (error) {
+        console.error('Error updating address:', error.message, error.stack);
+        res.status(500).json({ message: 'Error updating address' });
+    }
+};
+
+exports.deleteUserAddress = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const address = await Addresses.findByPk(id);
+        if (address) {
+            await address.destroy();
+            res.status(204).send(); // No Content
+        } else {
+            res.status(404).json({ message: 'Address not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting address:', error.message, error.stack);
+        res.status(500).json({ message: 'Error deleting address' });
     }
 };

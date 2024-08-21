@@ -15,6 +15,7 @@ router.get('/order/:id', orderController.getOrderById);
 router.post('/order/', orderController.createOrder);
 router.put('/order/:id', orderController.updateOrder);
 router.delete('/order/:id', orderController.deleteOrder);
+
 router.get('/ordershoe', orderController.getAllOrdershoe)
 
 router.get('/adresses', adresseController.getAllAddresses);
@@ -23,6 +24,7 @@ router.put('/adresses/:id', adresseController.updateAddress);
 router.delete('/adresses/:id', adresseController.deleteAddress);
 
 router.post('/createorder', paymentController.createOrder )
+
 // Obtener todas las zapatillas
 router.get('/shoes', shoesController.getAllShoes);
 router.get('/shoes/id/:id', shoesController.getShoeById);
@@ -48,7 +50,11 @@ router.get('/users/:id', usersController.getUserProfile);
 router.put('/users/:id', usersController.updateUserProfile);
 router.delete('/users/:id', usersController.deleteUser);
 router.get('/usersshoe', usersController.getAllUserShoe);
+
 router.get('/useraddresses', usersController.getAllUserAddresses);
+router.post('/useraddresses', usersController.createUserAddress);
+router.put('/useraddresses/:id', usersController.updateUserAddress);
+router.delete('/useraddresses/:id', usersController.deleteUserAddress);
 
 // Rutas de autenticación
 router.post('/auth/login', authController.login);

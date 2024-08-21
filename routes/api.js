@@ -11,6 +11,10 @@ var adresseController = require("../controllers/product/adressesController");
 var orderController = require("../controllers/product/orderController");
 
 router.get('/order', orderController.getAllOrder)
+router.get('/order/:id', orderController.getOrderById);
+router.post('/order/', orderController.createOrder);
+router.put('/order/:id', orderController.updateOrder);
+router.delete('/order/:id', orderController.deleteOrder);
 router.get('/ordershoe', orderController.getAllOrdershoe)
 
 router.get('/adresses', adresseController.getAllAddresses);

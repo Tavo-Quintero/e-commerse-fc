@@ -123,7 +123,9 @@ exports.createUserAddress = async (req, res) => {
             for (const addressId of addresses) {
                 const address = await Addresses.findByPk(addressId);
                 if (address) {
-                    await user.addAddress(address);
+                    await user.addAddress(address, { through: { addressesid: addressId, userid: user.id } });
+                } else {
+                    throw new Error(`Address with ID ${addressId} not found`);
                 }
             }
         }
@@ -140,7 +142,7 @@ exports.createUserAddress = async (req, res) => {
         res.status(201).json(updatedUser);
     } catch (error) {
         console.error('Error creating user and associating addresses:', error.message, error.stack);
-        res.status(500).json({ message: 'Error creating user and associating addresses' });
+        res.status(500).json({ message: 'Error creating user and associating addresses', error: error.message });
     }
 };
 

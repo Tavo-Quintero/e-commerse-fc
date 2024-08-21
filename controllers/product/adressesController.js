@@ -21,11 +21,11 @@ exports.createAddress = async (req, res) => {
 
 exports.updateAddress = async (req, res) => {
     const { id } = req.params;
-    const { street, city, state, country, zipCode, userId } = req.body;
+    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
     try {
         const address = await Addresses.findByPk(id);
         if (address) {
-            await address.update({ street, city, state, country, zipCode, userId });
+            await address.update({ pais, provincia, ciudad, codigopostal, direccion, numberphone});
             res.json(address);
         } else {
             res.status(404).json({ message: 'Address not found' });

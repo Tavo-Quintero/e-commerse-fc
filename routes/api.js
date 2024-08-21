@@ -60,5 +60,4 @@ router.get('/shoesizes', async function(req, res, next) {
         res.status(500).send('Error en el servidor');
     }
 });
-
 module.exports = router;

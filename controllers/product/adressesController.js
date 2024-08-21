@@ -9,37 +9,13 @@ exports.getAllAddresses = async (req, res) => {
         res.status(500).json({ message: 'Error fetching getAllAddresses' });
     }
 };
-
-exports.createUserAddress = async (req, res) => {
+exports.createAddress = async (req, res) => {
+    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
     try {
-        const { username, email, password, isAdmin, ban, addresses } = req.body;
-
-        // Crear el usuario con los detalles proporcionados
-        const user = await User.create({ username, email, password, isAdmin, ban });
-
-        // Asociar las direcciones existentes al usuario
-        if (addresses && addresses.length > 0) {
-            for (const addressId of addresses) {
-                const address = await Addresses.findByPk(addressId);
-                if (address) {
-                    await user.addAddress(address);
-                }
-            }
-        }
-
-        // Recuperar el usuario con las direcciones asociadas
-        const updatedUser = await User.findByPk(user.id, {
-            include: {
-                model: Addresses,
-                as: 'addresses',
-                through: { attributes: ['addressesid', 'userid'] }  // Incluye la tabla intermedia
-            }
-        });
-
-        res.status(201).json(updatedUser);
+        const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        res.status(201).json(newAddress);
     } catch (error) {
-        console.error('Error creating user and associating addresses:', error.message, error.stack);
-        res.status(500).json({ message: 'Error creating user and associating addresses' });
+        res.status(500).json({ message: 'Error creating Address' });
     }
 };
 

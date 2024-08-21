@@ -113,32 +113,37 @@ exports.getAllUserAddresses = async (req, res) => {
 
 exports.createUserAddress = async (req, res) => {
     try {
-        const { userid, pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+        const { username, email, password, isAdmin, ban, addresses } = req.body;
 
-        // Verificar si el usuario existe
-        const user = await User.findByPk(userid);
+        // Crear el usuario con los detalles proporcionados
+        const user = await User.create({ username, email, password, isAdmin, ban });
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+        // Asociar las direcciones existentes al usuario
+        if (addresses && addresses.length > 0) {
+            for (const addressId of addresses) {
+                const address = await Addresses.findByPk(addressId);
+                if (address) {
+                    await user.addAddress(address);
+                }
+            }
         }
 
-        // Crear la nueva dirección
-        const address = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
-
-        // Asociar la nueva dirección al usuario
-        await user.addAddress(address);
-
-        // Actualizar el usuario con las nuevas direcciones
-        const updatedUser = await User.findByPk(userid, {
-            include: { model: Addresses, as: 'addresses' }
+        // Recuperar el usuario con las direcciones asociadas
+        const updatedUser = await User.findByPk(user.id, {
+            include: {
+                model: Addresses,
+                as: 'addresses',
+                through: { attributes: ['addressesid', 'userid'] }  // Incluye la tabla intermedia
+            }
         });
 
         res.status(201).json(updatedUser);
     } catch (error) {
-        console.error('Error creating address:', error.message, error.stack);
-        res.status(500).json({ message: 'Error creating address' });
+        console.error('Error creating user and associating addresses:', error.message, error.stack);
+        res.status(500).json({ message: 'Error creating user and associating addresses' });
     }
 };
+
 
 exports.updateUserAddress = async (req, res) => {
     const { id } = req.params;

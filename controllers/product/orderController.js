@@ -34,9 +34,9 @@ exports.getOrderById = async (req, res) => {
 };
 
 exports.createOrder = async (req, res) => {
-    const { userid, statuspago, statusenvio, fecha, total } = req.body;
+    const { statuspago, statusenvio, fecha, total } = req.body;
     try {
-        const newOrder = await Order.create({ userid, statuspago, statusenvio, fecha, total });
+        const newOrder = await Order.create({ statuspago, statusenvio, fecha, total });
         res.status(201).json(newOrder);
     } catch (error) {
         res.status(500).json({ message: 'Error creating Order', error });
@@ -45,11 +45,11 @@ exports.createOrder = async (req, res) => {
 
 exports.updateOrder = async (req, res) => {
     const { id } = req.params;
-    const { userid, statuspago, statusenvio, fecha, total } = req.body;
+    const {  statuspago, statusenvio, fecha, total } = req.body;
     try {
         const order = await Order.findByPk(id);
         if (order) {
-            await order.update({ userid, statuspago, statusenvio, fecha, total });
+            await order.update({ statuspago, statusenvio, fecha, total });
             res.json({ message: 'Order updated successfully', order });
         } else {
             res.status(404).json({ message: 'Order not found' });

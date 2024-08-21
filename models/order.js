@@ -6,14 +6,6 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             allowNull: false
         },
-        userid: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'users',
-                key: 'id'
-            },
-            onDelete: 'CASCADE'
-        },
         statuspago: {
             type: DataTypes.STRING,
             allowNull: false,

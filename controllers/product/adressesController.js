@@ -24,21 +24,16 @@ exports.updateAddress = async (req, res) => {
     const { id } = req.params;
     const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
     try {
-        console.log('Received ID:', id); // Log del ID recibido
-        console.log('Update data:', { pais, provincia, ciudad, codigopostal, direccion, numberphone }); // Log de los datos a actualizar
-
         const address = await Addresses.findByPk(id);
-        console.log('Address found:', address); // Log de la dirección encontrada
-
         if (address) {
             await address.update({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
-            res.json(address);
+            res.json({ message: 'Address updated successfully', address });
         } else {
             res.status(404).json({ message: 'Address not found' });
         }
     } catch (error) {
-        console.error('Error updating Address:', error); // Log del error
-        res.status(500).json({ message: 'Error updating Address' });
+        console.error('Error updating Address:', error);
+        res.status(500).json({ message: 'Error updating Address', error });
     }
 };
 

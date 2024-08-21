@@ -9,3 +9,43 @@ exports.getAllAddresses = async (req, res) => {
         res.status(500).json({ message: 'Error fetching getAllAddresses' });
     }
 };
+exports.createAddress = async (req, res) => {
+    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+    try {
+        const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        res.status(201).json(newAddress);
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating Address' });
+    }
+};
+
+exports.updateAddress = async (req, res) => {
+    const { id } = req.params;
+    const { street, city, state, country, zipCode, userId } = req.body;
+    try {
+        const address = await Addresses.findByPk(id);
+        if (address) {
+            await address.update({ street, city, state, country, zipCode, userId });
+            res.json(address);
+        } else {
+            res.status(404).json({ message: 'Address not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating Address' });
+    }
+};
+
+exports.deleteAddress = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const address = await Addresses.findByPk(id);
+        if (address) {
+            await address.destroy();
+            res.json({ message: 'Address deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Address not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting Address' });
+    }
+};

@@ -14,6 +14,11 @@ router.get('/order', orderController.getAllOrder)
 router.get('/ordershoe', orderController.getAllOrdershoe)
 
 router.get('/adresses', adresseController.getAllAddresses);
+router.get('/', adresseController.getAllAddresses);
+router.post('/', adresseController.createAddress);
+router.put('/:id', adresseController.updateAddress);
+router.delete('/:id', adresseController.deleteAddress);
+
 router.post('/createorder', paymentController.createOrder )
 // Obtener todas las zapatillas
 router.get('/shoes', shoesController.getAllShoes);

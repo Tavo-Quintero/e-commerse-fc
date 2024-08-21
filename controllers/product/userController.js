@@ -48,18 +48,19 @@ exports.getUserProfile = async (req, res) => {
 
 // Actualizar perfil de usuario
 exports.updateUserProfile = async (req, res) => {
+    const { id } = req.params;
+    const { username, email, password, isAdmin, ban } = req.body;
     try {
-        const { username, email } = req.body;
-        const user = await User.findByPk(req.user.id);
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+        const users = await User.findByPk(id);
+        if (users) {
+            await users.update({username, email, password, isAdmin, ban});
+            res.json({ message: 'users updated successfully', users });
+        } else {
+            res.status(404).json({ message: 'adress not found' });
         }
-
-        await user.update({ username, email });
-        res.json(user);
     } catch (error) {
-        res.status(500).json({ message: 'Error updating user profile' });
+        console.error('Error updating Address:', error);
+        res.status(500).json({ message: 'Error updating Address', error });
     }
 };
 

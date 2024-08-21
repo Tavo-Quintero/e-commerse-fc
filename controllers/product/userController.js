@@ -6,34 +6,12 @@ const jwt = require('jsonwebtoken');
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, addresses } = req.body;
+        const { username, email, password, isAdmin } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Crear el usuario
-        const user = await User.create({
-            username,
-            email,
-            password: hashedPassword,
-            isAdmin
-        });
-
-        // Si hay direcciones, asociarlas al usuario
-        if (addresses && addresses.length > 0) {
-            const userAddresses = addresses.map(address => ({
-                ...address,
-                userid: user.id
-            }));
-            await Addresses.bulkCreate(userAddresses);
-        }
-
-        // Obtener el usuario con las direcciones recién creadas
-        const newUser = await User.findByPk(user.id, {
-            include: { model: Addresses, as: 'addresses' }
-        });
-
-        res.status(201).json(newUser);
+        const user = await User.create({ username, email, password: hashedPassword, isAdmin });
+        res.status(201).json(user);
     } catch (error) {
-        console.error('Error registering user:', error.message, error.stack);
         res.status(500).json({ message: 'Error registering user' });
     }
 };
@@ -135,8 +113,25 @@ exports.getAllUserAddresses = async (req, res) => {
 exports.createUserAddress = async (req, res) => {
     try {
         const { userid, pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+
+        // Verificar si el usuario existe
+        const user = await User.findByPk(userid, {
+            include: { model: Addresses, as: 'addresses' }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Crear la nueva dirección y asociarla al usuario
         const address = await Addresses.create({ userid, pais, provincia, ciudad, codigopostal, direccion, numberphone });
-        res.status(201).json(address);
+
+        // Actualizar el usuario con las nuevas direcciones
+        const updatedUser = await User.findByPk(userid, {
+            include: { model: Addresses, as: 'addresses' }
+        });
+
+        res.status(201).json(updatedUser);
     } catch (error) {
         console.error('Error creating address:', error.message, error.stack);
         res.status(500).json({ message: 'Error creating address' });

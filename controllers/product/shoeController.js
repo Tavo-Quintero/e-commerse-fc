@@ -26,19 +26,22 @@ exports.getShoeById = async (req, res) => {
 // Crear una nueva zapatilla
 exports.createShoe = async (req, res) => {
     try {
-        const { name, brand, price, gender, sport, image, sizes, description, stock,enable  } = req.body;
+        const { name, brand, price, gender, sport, image, sizes, description, stock, enable } = req.body;
 
-        console.log('Datos recibidos:', { name, brand, price, gender, sport, image, sizes, description, stock,enable  });
+        console.log('Datos recibidos:', { name, brand, price, gender, sport, image, sizes, description, stock, enable });
 
-        const shoe = await Shoe.create({ name, brand, price, gender, sport, image, description, stock,enable  });
+        const shoe = await Shoe.create({ name, brand, price, gender, sport, image, description, stock, enable });
         console.log('Shoe creado:', shoe);
 
         if (sizes && sizes.length > 0) {
-            const sizeInstances = await Size.findAll({ where: { id: sizes } });
-            console.log('Tallas encontradas:', sizeInstances);
-
-            await shoe.setSizes(sizeInstances);
-            console.log('Tallas asociadas al Shoe');
+            // Crear la relación con quantity
+            for (const size of sizes) {
+                const sizeInstance = await Size.findByPk(size.id);
+                if (sizeInstance) {
+                    await shoe.addSize(sizeInstance, { through: { quantity: size.quantity } });
+                    console.log(`Talla ${sizeInstance.id} asociada al Shoe con cantidad ${size.quantity}`);
+                }
+            }
         }
 
         res.status(201).json(shoe);
@@ -47,6 +50,7 @@ exports.createShoe = async (req, res) => {
         res.status(500).json({ message: 'Error creating shoe', error: error.message });
     }
 };
+
 
 // Actualizar una zapatilla existente
 exports.updateShoe = async (req, res) => {

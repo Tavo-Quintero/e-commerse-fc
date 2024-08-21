@@ -6,12 +6,34 @@ const jwt = require('jsonwebtoken');
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, isAdmin } = req.body;
+        const { username, email, password, isAdmin, addresses } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ username, email, password: hashedPassword, isAdmin });
-        res.status(201).json(user);
+        // Crear el usuario
+        const user = await User.create({
+            username,
+            email,
+            password: hashedPassword,
+            isAdmin
+        });
+
+        // Si hay direcciones, asociarlas al usuario
+        if (addresses && addresses.length > 0) {
+            const userAddresses = addresses.map(address => ({
+                ...address,
+                userid: user.id
+            }));
+            await Addresses.bulkCreate(userAddresses);
+        }
+
+        // Obtener el usuario con las direcciones recién creadas
+        const newUser = await User.findByPk(user.id, {
+            include: { model: Addresses, as: 'addresses' }
+        });
+
+        res.status(201).json(newUser);
     } catch (error) {
+        console.error('Error registering user:', error.message, error.stack);
         res.status(500).json({ message: 'Error registering user' });
     }
 };

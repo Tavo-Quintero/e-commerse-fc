@@ -22,11 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      defaultValue: true,
     },
     ban: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      defaultValue: true,
     }
 
   }, {

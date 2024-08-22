@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     enable: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false
     }
   }, {
     tableName: 'shoes',

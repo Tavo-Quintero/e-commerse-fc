@@ -140,7 +140,7 @@ exports.createUsershoe = async (req, res) => {
         const { username, email, password, isAdmin, ban, shoes } = req.body;
 
         console.log('Datos recibidos:', { username, email, password, isAdmin, ban, shoes });
-        
+
         const user = await User.create({ username, email, password, isAdmin, ban });
         console.log('Usuario creado:', user);
 
@@ -159,36 +159,18 @@ exports.createUsershoe = async (req, res) => {
     }
 };
 
-
-exports.updateUserAddress = async (req, res) => {
-    const { id } = req.params;
-    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+exports.deleteUsersshoe = async (req, res) => {
     try {
-        const address = await Addresses.findByPk(id);
-        if (address) {
-            await address.update({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
-            res.json(address);
-        } else {
-            res.status(404).json({ message: 'Address not found' });
+        console.log('Attempting to delete shoe with ID:', req.params.id);
+        const users = await User.findByPk(req.params.id);
+        if (!users) {
+            console.log('Shoe not found');
+            return res.status(404).json({ message: 'Shoe not found' });
         }
+        await users.destroy();
+        res.status(204).send();
     } catch (error) {
-        console.error('Error updating address:', error.message, error.stack);
-        res.status(500).json({ message: 'Error updating address' });
-    }
-};
-
-exports.deleteUserAddress = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const address = await Addresses.findByPk(id);
-        if (address) {
-            await address.destroy();
-            res.status(204).send(); // No Content
-        } else {
-            res.status(404).json({ message: 'Address not found' });
-        }
-    } catch (error) {
-        console.error('Error deleting address:', error.message, error.stack);
-        res.status(500).json({ message: 'Error deleting address' });
+        console.error('Error deleting shoe:', error);
+        res.status(500).json({ message: 'Error deleting shoe', error: error.message });
     }
 };

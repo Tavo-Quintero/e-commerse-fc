@@ -115,23 +115,23 @@ exports.createUserAddress = async (req, res) => {
     try {
         const { username, email, password, isAdmin, ban,addresses} = req.body;
 
-        console.log('Datos recibidos:', { username, email, password, isAdmin, ban });
+        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, addresses });
 
         const users = await User.create({ username, email, password, isAdmin, ban });
-        console.log('users addresses creado:', users);
+        console.log('userAadress addresses creado:', users);
 
         if (addresses && addresses.length > 0) {
             const addressesInstances = await Addresses.findAll({ where: { id: addresses } });
             console.log('Tallas encontradas:', addressesInstances);
 
             await users.setAddresses(addressesInstances);
-            console.log('Tallas asociadas al Shoe');
+            console.log('Tallas asociadas al userAadress');
         }
 
         res.status(201).json(users);
     } catch (error) {
-        console.error('Error al crear Shoe:', error);
-        res.status(500).json({ message: 'Error creating shoe', error: error.message });
+        console.error('Error al crear userAadress:', error);
+        res.status(500).json({ message: 'Error creating userAadress', error: error.message });
     }
 };
 

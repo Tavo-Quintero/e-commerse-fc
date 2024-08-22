@@ -145,7 +145,7 @@ exports.createUsershoe = async (req, res) => {
         console.log('createUsershoe addresses creado:', users);
 
         if (shoes && shoes.length > 0) {
-            const shoesInstances = await Addresses.findAll({ where: { id: shoes } });
+            const shoesInstances = await Shoe.findAll({ where: { id: shoes } });
             console.log('Tallas encontradas:', shoesInstances);
 
             await users.setShoe(shoesInstances);

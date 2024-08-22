@@ -1,7 +1,8 @@
 // controllers/userController.js
-const { User, Shoe, Addresses} = require('../../models');
+const { User, Shoe, Addresses, Order} = require('../../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { sendOrderConfirmation} = require('../../sendgrid/notifications');
 
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
@@ -147,8 +148,9 @@ exports.createUsershoe = async (req, res) => {
         if (shoes && shoes.length > 0) {
             const shoesInstances = await Shoe.findAll({ where: { id: shoes } });
             console.log('Zapatos encontrados:', shoesInstances);
-
             await user.setShoes(shoesInstances);
+            // Enviar correo de confirmación de orden
+            await sendOrderConfirmation(email, Shoe);
             console.log('Zapatos asociados al usuario');
         }
 

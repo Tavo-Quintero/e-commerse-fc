@@ -38,6 +38,7 @@ exports.createOrder = async (req, res) => {
     try {
         const newOrder = await Order.create({ statuspago, statusenvio, fecha, total });
         res.status(201).json(newOrder);
+
     } catch (error) {
         res.status(500).json({ message: 'Error creating Order', error });
     }
@@ -51,6 +52,7 @@ exports.updateOrder = async (req, res) => {
         if (order) {
             await order.update({ statuspago, statusenvio, fecha, total });
             res.json({ message: 'Order updated successfully', order });
+
         } else {
             res.status(404).json({ message: 'Order not found' });
         }

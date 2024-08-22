@@ -1,5 +1,5 @@
 // controllers/userController.js
-const { User, Shoe, Addresses } = require('../../models');
+const { User, Shoe, Addresses} = require('../../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -101,52 +101,55 @@ exports.getAllUserShoe = async (req, res) => {
 };
 
 
+exports.getAllUserAddresses = async (req, res) => {
+    try {
+        const users = await User.findAll({ include: { model: Addresses, as: 'addresses' } });
+        res.json(users);
+    } catch (error) {
+        console.error('Error creating user and associating addresses:', error.errors || error.message, error.stack);
+        res.status(500).json({ message: 'Error creating user and associating addresses', error: error.errors || error.message });
+    }
+};
+
 exports.createUserAddress = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban, addresses } = req.body;
+        const { username, email, password, isAdmin, ban,addresses} = req.body;
 
-        // Validar datos
-        if (!username || !email || !password) {
-            return res.status(400).json({ message: 'Username, email, and password are required' });
-        }
+        console.log('Datos recibidos:', { username, email, password, isAdmin, ban });
 
-        // Verificar si el email ya está en uso
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Email already in use' });
-        }
+        const users = await User.create({ username, email, password, isAdmin, ban });
+        console.log('users addresses creado:', users);
 
-        // Crear el usuario con los detalles proporcionados
-        const user = await User.create({ username, email, password, isAdmin, ban });
-        console.log('User creado:', user);
-
-        // Asociar las direcciones existentes al usuario
         if (addresses && addresses.length > 0) {
-            for (const addressId of addresses) {
-                // Verificar si la dirección existe
-                const address = await Addresses.findByPk(addressId);
-                if (!address) {
-                    return res.status(404).json({ message: `Address with ID ${addressId} not found` });
-                }
-                // Asociar la dirección al usuario
-                await user.addAddress(address, { through: { addressesid: addressId, userid: user.id } });
-                console.log(`Dirección ${addressId} asociada al usuario ${user.id}`);
-            }
+            const addressesInstances = await Addresses.findAll({ where: { id: addresses } });
+            console.log('Tallas encontradas:', addressesInstances);
+
+            await users.setAddresses(addressesInstances);
+            console.log('Tallas asociadas al Shoe');
         }
 
-        // Recuperar el usuario con las direcciones asociadas
-        const updatedUser = await User.findByPk(user.id, {
-            include: {
-                model: Addresses,
-                as: 'addresses',
-                through: { attributes: ['addressesid', 'userid'] } // Incluye la tabla intermedia
-            }
-        });
-
-        res.status(201).json(updatedUser);
+        res.status(201).json(users);
     } catch (error) {
-        console.error('Error creating user and associating addresses:', error.message, error.stack);
-        res.status(500).json({ message: 'Error creating user and associating addresses', error: error.message });
+        console.error('Error al crear Shoe:', error);
+        res.status(500).json({ message: 'Error creating shoe', error: error.message });
+    }
+};
+
+
+exports.updateUserAddress = async (req, res) => {
+    const { id } = req.params;
+    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
+    try {
+        const address = await Addresses.findByPk(id);
+        if (address) {
+            await address.update({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+            res.json(address);
+        } else {
+            res.status(404).json({ message: 'Address not found' });
+        }
+    } catch (error) {
+        console.error('Error updating address:', error.message, error.stack);
+        res.status(500).json({ message: 'Error updating address' });
     }
 };
 

@@ -54,27 +54,45 @@ exports.createShoe = async (req, res) => {
 
 // Actualizar una zapatilla existente
 exports.updateShoe = async (req, res) => {
-    shoe.setSizes = async function (sizeInstances) {
-        
-    };
     try {
         const { name, brand, price, gender, sport, image, sizes, description, stock, enable } = req.body;
-        const shoe = await Shoe.findByPk( req.params.id);
+
+        // Buscar el zapato por ID
+        const shoe = await Shoe.findByPk(req.params.id);
 
         if (!shoe) {
             return res.status(404).json({ message: 'Shoe not found' });
         }
 
-        await shoe.update({ name, brand, price, gender, sport, image, description, stock,enable });
+        // Actualizar los campos del zapato
+        await shoe.update({ name, brand, price, gender, sport, image, description, stock, enable });
 
         if (sizes && sizes.length > 0) {
-            const sizeInstances = await Size.findAll({ where: { id: sizes } });
-            await shoe.setSizes(sizeInstances);
+            // Eliminar todas las relaciones de tallas existentes
+            await shoe.setSizes([]);
+
+            // Crear las nuevas relaciones con quantity
+            for (const size of sizes) {
+                const sizeInstance = await Size.findByPk(size.id);
+                if (sizeInstance) {
+                    await shoe.addSize(sizeInstance, { through: { quantity: size.quantity } });
+                    console.log(`Talla ${sizeInstance.id} actualizada en Shoe con cantidad ${size.quantity}`);
+                }
+            }
         }
 
-        res.json(shoe);
+        // Recuperar el zapato actualizado con las tallas
+        const updatedShoe = await Shoe.findByPk(shoe.id, {
+            include: {
+                model: Size,
+                as: 'sizes',
+                through: { attributes: ['quantity'] } // Incluye la cantidad en la tabla intermedia
+            }
+        });
+
+        res.json(updatedShoe);
     } catch (error) {
-        console.error('Error updating shoe:', error); // Agrega un log más detallado
+        console.error('Error updating shoe:', error); // Log más detallado
         res.status(500).json({ message: 'Error updating shoe', error: error.message });
     }
 };

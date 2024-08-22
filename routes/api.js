@@ -50,11 +50,11 @@ router.get('/users/:id', usersController.getUserProfile);
 router.put('/users/:id', usersController.updateUserProfile);
 router.delete('/users/:id', usersController.deleteUser);
 router.get('/usersshoe', usersController.getAllUserShoe);
+router.post('/usersshoe', usersController.createUsershoe);
 
 router.get('/useraddresses', usersController.getAllUserAddresses);
 router.post('/useraddresses', usersController.createUserAddress);
-router.put('/useraddresses/:id', usersController.updateUserAddress);
-router.delete('/useraddresses/:id', usersController.deleteUserAddress);
+
 
 // Rutas de autenticación
 router.post('/auth/login', authController.login);

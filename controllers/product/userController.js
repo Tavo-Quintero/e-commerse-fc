@@ -101,32 +101,36 @@ exports.getAllUserShoe = async (req, res) => {
 };
 
 
-exports.getAllUserAddresses = async (req, res) => {
-    try {
-        const users = await User.findAll({ include: { model: Addresses, as: 'addresses' } });
-        res.json(users);
-    } catch (error) {
-        console.error('Error creating user and associating addresses:', error.errors || error.message, error.stack);
-        res.status(500).json({ message: 'Error creating user and associating addresses', error: error.errors || error.message });
-    }
-};
-
 exports.createUserAddress = async (req, res) => {
     try {
         const { username, email, password, isAdmin, ban, addresses } = req.body;
 
+        // Validar datos
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: 'Username, email, and password are required' });
+        }
+
+        // Verificar si el email ya está en uso
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
         // Crear el usuario con los detalles proporcionados
         const user = await User.create({ username, email, password, isAdmin, ban });
+        console.log('User creado:', user);
 
         // Asociar las direcciones existentes al usuario
         if (addresses && addresses.length > 0) {
             for (const addressId of addresses) {
+                // Verificar si la dirección existe
                 const address = await Addresses.findByPk(addressId);
-                if (address) {
-                    await user.addAddress(address, { through: { addressesid: addressId, userid: user.id } });
-                } else {
-                    throw new Error(`Address with ID ${addressId} not found`);
+                if (!address) {
+                    return res.status(404).json({ message: `Address with ID ${addressId} not found` });
                 }
+                // Asociar la dirección al usuario
+                await user.addAddress(address, { through: { addressesid: addressId, userid: user.id } });
+                console.log(`Dirección ${addressId} asociada al usuario ${user.id}`);
             }
         }
 
@@ -135,7 +139,7 @@ exports.createUserAddress = async (req, res) => {
             include: {
                 model: Addresses,
                 as: 'addresses',
-                through: { attributes: ['addressesid', 'userid'] }  // Incluye la tabla intermedia
+                through: { attributes: ['addressesid', 'userid'] } // Incluye la tabla intermedia
             }
         });
 
@@ -143,24 +147,6 @@ exports.createUserAddress = async (req, res) => {
     } catch (error) {
         console.error('Error creating user and associating addresses:', error.message, error.stack);
         res.status(500).json({ message: 'Error creating user and associating addresses', error: error.message });
-    }
-};
-
-
-exports.updateUserAddress = async (req, res) => {
-    const { id } = req.params;
-    const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
-    try {
-        const address = await Addresses.findByPk(id);
-        if (address) {
-            await address.update({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
-            res.json(address);
-        } else {
-            res.status(404).json({ message: 'Address not found' });
-        }
-    } catch (error) {
-        console.error('Error updating address:', error.message, error.stack);
-        res.status(500).json({ message: 'Error updating address' });
     }
 };
 

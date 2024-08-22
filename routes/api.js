@@ -51,10 +51,11 @@ router.put('/users/:id', usersController.updateUserProfile);
 router.delete('/users/:id', usersController.deleteUser);
 router.get('/usersshoe', usersController.getAllUserShoe);
 router.post('/usersshoe', usersController.createUsershoe);
+router.delete('/usersshoe/:id', usersController.deleteUsersshoe);
 
 router.get('/useraddresses', usersController.getAllUserAddresses);
 router.post('/useraddresses', usersController.createUserAddress);
-router.delete('/useraddresses/:id', usersController.deleteUsersshoe);
+
 
 // Rutas de autenticación
 router.post('/auth/login', authController.login);

@@ -137,25 +137,25 @@ exports.createUserAddress = async (req, res) => {
 
 exports.createUsershoe = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban, shoes} = req.body;
+        const { username, email, password, isAdmin, ban, shoes } = req.body;
 
         console.log('Datos recibidos:', { username, email, password, isAdmin, ban, shoes });
-
-        const users = await Shoe.create({ username, email, password, isAdmin, ban });
-        console.log('createUsershoe addresses creado:', users);
+        
+        const user = await User.create({ username, email, password, isAdmin, ban });
+        console.log('Usuario creado:', user);
 
         if (shoes && shoes.length > 0) {
             const shoesInstances = await Shoe.findAll({ where: { id: shoes } });
-            console.log('Tallas encontradas:', shoesInstances);
+            console.log('Zapatos encontrados:', shoesInstances);
 
-            await users.setShoe(shoesInstances);
-            console.log('Tallas asociadas al createUsershoe');
+            await user.setShoes(shoesInstances);
+            console.log('Zapatos asociados al usuario');
         }
 
-        res.status(201).json(users);
+        res.status(201).json(user);
     } catch (error) {
-        console.error('Error al crear createUsershoe:', error);
-        res.status(500).json({ message: 'Error creating createUsershoe', error: error.message });
+        console.error('Error al crear usuario y asociar zapatos:', error);
+        res.status(500).json({ message: 'Error creando usuario y asociando zapatos', error: error.message });
     }
 };
 

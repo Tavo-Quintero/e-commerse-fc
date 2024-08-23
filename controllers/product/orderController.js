@@ -1,4 +1,4 @@
-const {Order, Shoe} = require("../../models");
+const {Order, Shoe, User} = require("../../models");
 
 exports.getAllOrdershoe = async (req, res) => {
     try {
@@ -73,5 +73,27 @@ exports.deleteOrder = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ message: 'Error deleting Order', error });
+    }
+};
+
+exports.createOrdershoe = async (req, res) => {
+    try {
+        const { statuspago, statusenvio, fecha, total, shoes  } = req.body;
+
+        console.log('Datos recibidos:', { statuspago, statusenvio, fecha, total, shoes });
+
+        const order = await Order.create({ statuspago, statusenvio, fecha, total });
+        console.log('Usuario creado:', order);
+
+        if (shoes && shoes.length > 0) {
+            const shoesInstances = await Shoe.findAll({ where: { id: shoes } });
+            console.log('Zapatos encontrados:', shoesInstances);
+            await order.setShoes(shoesInstances);
+        }
+
+        res.status(201).json(order);
+    } catch (error) {
+        console.error('Error al crear usuario y asociar zapatos:', error);
+        res.status(500).json({ message: 'Error creando usuario y asociando zapatos', error: error.message });
     }
 };

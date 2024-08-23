@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    preference: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -28,11 +32,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    preference: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
   }, {
     tableName: 'users',
     timestamps: false,

@@ -17,6 +17,7 @@ router.put('/order/:id', orderController.updateOrder);
 router.delete('/order/:id', orderController.deleteOrder);
 
 router.get('/ordershoe', orderController.getAllOrdershoe)
+router.post('/ordershoe', orderController.createOrdershoe)
 
 router.get('/adresses', adresseController.getAllAddresses);
 router.post('/adresses/', adresseController.createAddress);

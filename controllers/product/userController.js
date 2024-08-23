@@ -2,7 +2,7 @@
 const { User, Shoe, Addresses, Order} = require('../../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { sendOrderConfirmation} = require('../../sendgrid/notifications');
+
 
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {

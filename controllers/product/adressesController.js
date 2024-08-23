@@ -18,8 +18,6 @@ exports.createAddress = async (req, res) => {
         res.status(500).json({ message: 'Error creating Address' });
     }
 };
-
-
 exports.updateAddress = async (req, res) => {
     const { id } = req.params;
     const { pais, provincia, ciudad, codigopostal, direccion, numberphone } = req.body;
@@ -36,7 +34,6 @@ exports.updateAddress = async (req, res) => {
         res.status(500).json({ message: 'Error updating Address', error });
     }
 };
-
 exports.deleteAddress = async (req, res) => {
     const { id } = req.params;
     try {

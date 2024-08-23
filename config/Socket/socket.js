@@ -9,23 +9,18 @@ module.exports = {
         io.on('connection', (socket) => {
             console.log('New client connected');
 
-            // Unirse a la sala específica del usuario
             socket.on('joinRoom', (userId) => {
                 socket.join(userId);
             });
 
-            // Mensajes del usuario
             socket.on('userMessage', (data) => {
                 const { userId, message } = data;
-                io.to(userId).emit('adminMessage', message); // Enviar mensaje al administrador
-                // Guarda el mensaje en la base de datos si es necesario
+                io.to(userId).emit('adminMessage', message);
             });
 
-            // Mensajes del administrador
             socket.on('adminMessage', (data) => {
                 const { userId, message } = data;
-                io.to(userId).emit('userMessage', message); // Enviar mensaje al usuario
-                // Guarda el mensaje en la base de datos si es necesario
+                io.to(userId).emit('userMessage', message);
             });
 
             socket.on('disconnect', () => {

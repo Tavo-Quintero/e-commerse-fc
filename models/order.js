@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
         },
         statusenvio: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         fecha: {

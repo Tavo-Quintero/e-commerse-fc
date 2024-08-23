@@ -27,7 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     ban: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    }
+    },
+    preferenceid: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
 
   }, {
     tableName: 'users',

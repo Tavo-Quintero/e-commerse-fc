@@ -7,10 +7,10 @@ const { sendOrderConfirmation} = require('../../sendgrid/notifications');
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, isAdmin } = req.body;
+        const { username, email, password, isAdmin,preferenceid }  = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ username, email, password: hashedPassword, isAdmin });
+        const user = await User.create({ username, email, password: hashedPassword, isAdmin,preferenceid });
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error registering user' });
@@ -50,11 +50,11 @@ exports.getUserProfile = async (req, res) => {
 // Actualizar perfil de usuario
 exports.updateUserProfile = async (req, res) => {
     const { id } = req.params;
-    const { username, email, password, isAdmin, ban } = req.body;
+    const { username, email, password, isAdmin, ban,preferenceid } = req.body;
     try {
         const users = await User.findByPk(id);
         if (users) {
-            await users.update({username, email, password, isAdmin, ban});
+            await users.update({username, email, password, isAdmin, ban,preferenceid});
             res.json({ message: 'users updated successfully', users });
         } else {
             res.status(404).json({ message: 'adress not found' });
@@ -114,15 +114,15 @@ exports.getAllUserAddresses = async (req, res) => {
 
 exports.createUserAddress = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban,addresses} = req.body;
+        const { username, email, password, isAdmin, ban,addresses,preferenceid} = req.body;
 
-        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, addresses });
+        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, addresses,preferenceid });
 
-        const users = await User.create({ username, email, password, isAdmin, ban });
+        const users = await User.create({ username, email, password, isAdmin, ban, preferenceid });
         console.log('userAadress addresses creado:', users);
 
         if (addresses && addresses.length > 0) {
-            const addressesInstances = await Addresses.findAll({ where: { id: addresses } });
+            const addressesInstances = await Addresses.findAll({ where: { id: addresses, } });
             console.log('Tallas encontradas:', addressesInstances);
 
             await users.setAddresses(addressesInstances);
@@ -138,11 +138,11 @@ exports.createUserAddress = async (req, res) => {
 
 exports.createUsershoe = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban, shoes } = req.body;
+        const { username, email, password, isAdmin, ban, shoes,preferenceid } = req.body;
 
-        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, shoes });
+        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, shoes,preferenceid });
 
-        const user = await User.create({ username, email, password, isAdmin, ban });
+        const user = await User.create({ username, email, password, isAdmin, ban,preferenceid });
         console.log('Usuario creado:', user);
 
         if (shoes && shoes.length > 0) {

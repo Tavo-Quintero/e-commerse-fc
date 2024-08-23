@@ -52,6 +52,7 @@ router.put('/users/:id', usersController.updateUserProfile);
 router.delete('/users/:id', usersController.deleteUser);
 router.get('/usersshoe', usersController.getAllUserShoe);
 router.post('/usersshoe', usersController.createUsershoe);
+router.post('/adressuser', usersController.createAddressUser);
 router.delete('/usersshoe/:id', usersController.deleteUsersshoe);
 
 router.get('/useraddresses', usersController.getAllUserAddresses);

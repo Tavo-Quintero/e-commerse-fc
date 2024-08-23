@@ -136,6 +136,30 @@ exports.createUserAddress = async (req, res) => {
     }
 };
 
+exports.createAddressUser = async (req, res) => {
+    try {
+        const { pais, provincia, ciudad, codigopostal, direccion, numberphone, users} = req.body;
+
+        console.log('Datos recibidos:', { pais, provincia, ciudad, codigopostal, direccion, numberphone, users });
+
+        const addresses = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        console.log('userAadress addresses creado:', addresses);
+
+        if (users && users.length > 0) {
+            const usersInstances = await User.findAll({ where: { id: users, } });
+            console.log('Tallas encontradas:', usersInstances);
+
+            await addresses.setUser(usersInstances);
+            console.log('Tallas asociadas al userAadress');
+        }
+
+        res.status(201).json(addresses);
+    } catch (error) {
+        console.error('Error al crear userAadress:', error);
+        res.status(500).json({ message: 'Error creating userAadress', error: error.message });
+    }
+};
+
 exports.createUsershoe = async (req, res) => {
     try {
         const { username, email, password, isAdmin, ban, shoes, preference } = req.body;

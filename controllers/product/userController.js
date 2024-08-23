@@ -153,14 +153,23 @@ exports.createAddressUser = async (req, res) => {
             const usersInstances = await User.findAll({ where: { id: users } });
             console.log('Usuarios encontrados:', usersInstances);
 
-            await address.setUsers(usersInstances);
-            console.log('Usuarios asociados a la dirección');
+            if (usersInstances.length === users.length) {
+                await address.setUsers(usersInstances);
+                console.log('Usuarios asociados a la dirección');
+            } else {
+                console.warn('Algunos usuarios no fueron encontrados, omitiendo asociación.');
+            }
         }
 
         res.status(201).json(address);
     } catch (error) {
         console.error('Error al crear dirección con usuarios:', error);
-        res.status(500).json({ message: 'Error al crear dirección con usuarios', error: error.message });
+
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            res.status(400).json({ message: 'Error de unicidad en algún campo.', error: error.message });
+        } else {
+            res.status(500).json({ message: 'Error al crear dirección con usuarios', error: error.message });
+        }
     }
 };
 

@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     preference: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     ban: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
     },
   }, {
     tableName: 'users',

@@ -47,7 +47,7 @@ exports.register = async (req, res) => {
         const { username, email, password, isAdmin, ban } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ username, email, password: hashedPassword, isAdmin, ban });
+        const user = await User.create({ username, email, password: hashedPassword, isAdmin, ban:false });
 
         // Enviar correo de confirmación de registro
         await sendRegistrationConfirmation(user.email, user.username);

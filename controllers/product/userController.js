@@ -136,6 +136,8 @@ exports.createUserAddress = async (req, res) => {
     }
 };
 
+// controllers/product/userController.js
+
 exports.createAddressUser = async (req, res) => {
     try {
         const { pais, provincia, ciudad, codigopostal, direccion, numberphone, users } = req.body;
@@ -151,7 +153,7 @@ exports.createAddressUser = async (req, res) => {
             const usersInstances = await User.findAll({ where: { id: users } });
             console.log('Usuarios encontrados:', usersInstances);
 
-            await address.setUsers(usersInstances); // Asegúrate de que este método esté definido en tus asociaciones
+            await address.setUsers(usersInstances);
             console.log('Usuarios asociados a la dirección');
         }
 

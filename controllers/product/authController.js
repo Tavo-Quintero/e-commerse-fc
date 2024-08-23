@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const { sendRegistrationConfirmation } = require('../../sendgrid/notifications');
+const { sendRegistrationConfirmation } = require('../../config/nodemailer/mailer');
 
 // Iniciar sesión
 exports.login = async (req, res) => {

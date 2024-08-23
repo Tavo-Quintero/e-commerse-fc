@@ -1,4 +1,5 @@
 const socketIo = require('socket.io');
+const cors = require('cors');
 
 let io;
 

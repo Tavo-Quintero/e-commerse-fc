@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, preference }  = req.body;
+        const { username, email, password, isAdmin, preference, }  = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ username, email, password: hashedPassword, isAdmin, preference });
+        const user = await User.create({ username, email, password: hashedPassword, isAdmin, preference, ban:false });
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error registering user' });

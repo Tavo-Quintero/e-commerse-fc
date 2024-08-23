@@ -20,7 +20,7 @@ exports.createAddress = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        await user.addAddress(newAddress);
+        await user.addAddresses(newAddress);
 
         res.status(201).json(newAddress);
     } catch (error) {

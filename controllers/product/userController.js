@@ -138,25 +138,27 @@ exports.createUserAddress = async (req, res) => {
 
 exports.createAddressUser = async (req, res) => {
     try {
-        const { pais, provincia, ciudad, codigopostal, direccion, numberphone, users} = req.body;
+        const { pais, provincia, ciudad, codigopostal, direccion, numberphone, users } = req.body;
 
-        console.log('Datos recibidos:', { pais, provincia, ciudad, codigopostal, direccion, numberphone, users });
+        console.log('Datos recibidos para crear dirección:', { pais, provincia, ciudad, codigopostal, direccion, numberphone, users });
 
-        const addresses = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
-        console.log('userAadress addresses creado:', addresses);
+        // Crear la dirección
+        const address = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        console.log('Dirección creada:', address);
 
+        // Asociar usuarios si existen
         if (users && users.length > 0) {
-            const usersInstances = await User.findAll({ where: { id: users, } });
-            console.log('Tallas encontradas:', usersInstances);
+            const usersInstances = await User.findAll({ where: { id: users } });
+            console.log('Usuarios encontrados:', usersInstances);
 
-            await addresses.setUser(usersInstances);
-            console.log('Tallas asociadas al userAadress');
+            await address.setUsers(usersInstances); // Asegúrate de que este método esté definido en tus asociaciones
+            console.log('Usuarios asociados a la dirección');
         }
 
-        res.status(201).json(addresses);
+        res.status(201).json(address);
     } catch (error) {
-        console.error('Error al crear userAadress:', error);
-        res.status(500).json({ message: 'Error creating userAadress', error: error.message });
+        console.error('Error al crear dirección con usuarios:', error);
+        res.status(500).json({ message: 'Error al crear dirección con usuarios', error: error.message });
     }
 };
 

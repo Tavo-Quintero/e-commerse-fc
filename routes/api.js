@@ -17,10 +17,10 @@ router.put('/order/:id', orderController.updateOrder);
 router.delete('/order/:id', orderController.deleteOrder);
 
 router.get('/ordershoe', orderController.getAllOrdershoe)
-router.post('/ordershoe', orderController.createOrdershoe)
+router.post('/adresses', adresseController.createAddress);
 
 router.get('/adresses', adresseController.getAllAddresses);
-router.post('/adresses/', adresseController.createAddress);
+router.post('/adresses', adresseController.createAddress);
 router.put('/adresses/:id', adresseController.updateAddress);
 router.delete('/adresses/:id', adresseController.deleteAddress);
 

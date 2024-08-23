@@ -2,27 +2,36 @@ const {Addresses, User} = require('../../models');
 
 exports.getAllAddresses = async (req, res) => {
     try {
-        const addresses = await Addresses.findAll();
+        const addresses = await Addresses.findAll({ include: { model: User, as: 'users' } });
         res.json(addresses);
     } catch (error) {
-        console.error('Error fetching getAllAddresses:', error.message, error.stack);
-        res.status(500).json({ message: 'Error fetching getAllAddresses' });
+        res.status(500).json({ message: 'Error fetching Addresses' });
     }
 };
+
 exports.createAddress = async (req, res) => {
     const { pais, provincia, ciudad, codigopostal, direccion, numberphone, userid } = req.body;
     try {
-        // Crear la nueva dirección
-        const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        console.log('Datos recibidos para crear dirección:', { pais, provincia, ciudad, codigopostal, direccion, numberphone, userid });
 
-        // Asociar la dirección con el usuario
+        // Crear la dirección
+        const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
+        console.log('Dirección creada:', newAddress);
+
+        // Asociar el usuario a la dirección
         await newAddress.addUser(userid);
+        console.log('Usuario asociado a la dirección:', userid);
 
         res.status(201).json(newAddress);
     } catch (error) {
-        res.status(500).json({ message: 'Error creating Address' });
+        console.error('Error al crear la dirección:', error);
+        res.status(500).json({
+            message: 'Error creating Address',
+            error: error.message
+        });
     }
 };
+
 
 
 exports.updateAddress = async (req, res) => {

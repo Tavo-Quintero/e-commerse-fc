@@ -93,17 +93,7 @@ exports.createOrdershoe = async (req, res) => {
 
         res.status(201).json(order);
     } catch (error) {
-        // Log detallado del error
-        console.error('Error al crear la orden y asociar zapatos:', {
-            message: error.message,
-            stack: error.stack,
-            error: error // Puedes loguear el objeto de error completo para más detalles
-        });
-
-        // Respuesta de error con detalles
-        res.status(500).json({
-            message: 'Error creando la orden y asociando zapatos',
-            error: error.message
-        });
+        console.error('Error al crear usuario y asociar zapatos:', error);
+        res.status(500).json({ message: 'Error creando usuario y asociando zapatos', error: error.message });
     }
 };

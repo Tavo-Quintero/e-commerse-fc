@@ -12,21 +12,18 @@ exports.getAllAddresses = async (req, res) => {
 exports.createAddress = async (req, res) => {
     const { pais, provincia, ciudad, codigopostal, direccion, numberphone, userid } = req.body;
     try {
-
+        // Crear la nueva dirección
         const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
 
-        const user = await User.findByPk(userid);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        await user.addAddresses(newAddress);
+        // Asociar la dirección con el usuario
+        await newAddress.addUser(userid);
 
         res.status(201).json(newAddress);
     } catch (error) {
-        res.status(500).json({ message: 'Error creating Address' });
+        res.status(500).json({ message: 'Error creating Address' });
     }
 };
+
 
 exports.updateAddress = async (req, res) => {
     const { id } = req.params;

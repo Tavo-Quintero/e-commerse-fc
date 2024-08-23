@@ -4,15 +4,15 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'teachercirope@gmail.com', // Aquí pones tu correo electrónico
-        pass: 'Sebasrica191213!' // Aquí pones tu contraseña
+        user: 'gustavo.quintero@cun.edu.co', // Aquí pones tu correo electrónico
+        pass: 'Tavo2810+' // Aquí pones tu contraseña
     }
 });
 
 // Función para enviar un correo de confirmación de registro
 const sendRegistrationConfirmation = (to, username) => {
     const mailOptions = {
-        from: 'teachercirope@gmail.com', // El mismo correo que usas para enviar
+        from: 'gustavo.quintero@cun.edu.co', // El mismo correo que usas para enviar
         to,
         subject: 'Confirmación de Registro',
         text: `Hola ${username},\n\nGracias por registrarte en nuestra plataforma. ¡Bienvenido!\n\nSaludos,\nEl equipo`
@@ -24,7 +24,7 @@ const sendRegistrationConfirmation = (to, username) => {
 // Función para enviar una confirmación de pedido
 const sendOrderConfirmation = (to, orderDetails) => {
     const mailOptions = {
-        from: 'teachercirope@gmail.com', // El mismo correo que usas para enviar
+        from: 'gustavo.quintero@cun.edu.co', // El mismo correo que usas para enviar
         to,
         subject: 'Confirmación de Pedido',
         text: `Hola,\n\nTu pedido ha sido confirmado. Aquí están los detalles de tu pedido:\n${orderDetails}\n\nGracias por tu compra.\n\nSaludos,\nEl equipo`

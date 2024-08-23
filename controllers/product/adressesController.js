@@ -1,4 +1,4 @@
-const {Addresses} = require('../../models');
+const {Addresses, User} = require('../../models');
 
 exports.getAllAddresses = async (req, res) => {
     try {
@@ -10,12 +10,12 @@ exports.getAllAddresses = async (req, res) => {
     }
 };
 exports.createAddress = async (req, res) => {
-    const { pais, provincia, ciudad, codigopostal, direccion, numberphone, userId } = req.body;
+    const { pais, provincia, ciudad, codigopostal, direccion, numberphone, userid } = req.body;
     try {
-   
+
         const newAddress = await Addresses.create({ pais, provincia, ciudad, codigopostal, direccion, numberphone });
 
-        const user = await Users.findByPk(userId);
+        const user = await User.findByPk(userid);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

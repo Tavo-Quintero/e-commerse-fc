@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    preferenceid: {
+    preference: {
       type: DataTypes.STRING,
       allowNull: true,
     },

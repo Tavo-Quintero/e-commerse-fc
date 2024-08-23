@@ -7,10 +7,10 @@ const { sendOrderConfirmation} = require('../../sendgrid/notifications');
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, isAdmin,preferenceid }  = req.body;
+        const { username, email, password, isAdmin, preference }  = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ username, email, password: hashedPassword, isAdmin,preferenceid });
+        const user = await User.create({ username, email, password: hashedPassword, isAdmin, preference });
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Error registering user' });
@@ -50,11 +50,11 @@ exports.getUserProfile = async (req, res) => {
 // Actualizar perfil de usuario
 exports.updateUserProfile = async (req, res) => {
     const { id } = req.params;
-    const { username, email, password, isAdmin, ban,preferenceid } = req.body;
+    const { username, email, password, isAdmin, ban, preference } = req.body;
     try {
         const users = await User.findByPk(id);
         if (users) {
-            await users.update({username, email, password, isAdmin, ban,preferenceid});
+            await users.update({username, email, password, isAdmin, ban, preference});
             res.json({ message: 'users updated successfully', users });
         } else {
             res.status(404).json({ message: 'adress not found' });
@@ -114,11 +114,11 @@ exports.getAllUserAddresses = async (req, res) => {
 
 exports.createUserAddress = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban,addresses,preferenceid} = req.body;
+        const { username, email, password, isAdmin, ban,addresses, preference} = req.body;
 
-        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, addresses,preferenceid });
+        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, addresses,preference });
 
-        const users = await User.create({ username, email, password, isAdmin, ban, preferenceid });
+        const users = await User.create({ username, email, password, isAdmin, ban, preference });
         console.log('userAadress addresses creado:', users);
 
         if (addresses && addresses.length > 0) {
@@ -138,20 +138,17 @@ exports.createUserAddress = async (req, res) => {
 
 exports.createUsershoe = async (req, res) => {
     try {
-        const { username, email, password, isAdmin, ban, shoes,preferenceid } = req.body;
+        const { username, email, password, isAdmin, ban, shoes, preference } = req.body;
 
-        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, shoes,preferenceid });
+        console.log('Datos recibidos:', { username, email, password, isAdmin, ban, shoes, preference });
 
-        const user = await User.create({ username, email, password, isAdmin, ban,preferenceid });
+        const user = await User.create({ username, email, password, isAdmin, ban, preference });
         console.log('Usuario creado:', user);
 
         if (shoes && shoes.length > 0) {
             const shoesInstances = await Shoe.findAll({ where: { id: shoes } });
             console.log('Zapatos encontrados:', shoesInstances);
             await user.setShoes(shoesInstances);
-            // Enviar correo de confirmación de orden
-            await sendOrderConfirmation(email, Shoe);
-            console.log('Zapatos asociados al usuario');
         }
 
         res.status(201).json(user);

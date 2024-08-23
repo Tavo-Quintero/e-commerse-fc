@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * Module dependencies.
  */
@@ -23,6 +21,11 @@ app.set('port', port);
 var server = http.createServer(app);
 
 // Configuración de Socket.io
+app.use(cors({
+  origin: 'https://tu-frontend-deploy.vercel.app', // URL del frontend
+  methods: ["GET", "POST"],
+  credentials: true
+}));
 const socketConfig = require('../config/socket/socket')
 
 const io = socketConfig.init(server);

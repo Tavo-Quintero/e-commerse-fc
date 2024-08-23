@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
       preference: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
